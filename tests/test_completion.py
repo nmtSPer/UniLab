@@ -23,31 +23,31 @@ def _write_completion_fixture(root: Path) -> None:
     (root / "scripts").mkdir()
     (root / "scripts" / "play_viser.py").write_text("", encoding="utf-8")
     owner_files = {
-        root / "conf" / "ppo" / "task" / "go1" / "mujoco.yaml": """
+        root / "conf" / "ppo" / "task" / "go1" / "go1_joystick_flat" / "mujoco.yaml": """
 training:
   task_name: Go1
   sim_backend: mujoco
 """,
-        root / "conf" / "ppo" / "task" / "go1" / "mujoco_hora.yaml": """
+        root / "conf" / "ppo" / "task" / "go1" / "go1_joystick_flat" / "mujoco_hora.yaml": """
 defaults:
-  - /task/go1/mujoco
+  - /task/go1/go1_joystick_flat/mujoco
   - _self_
 algo:
   algo_log_name: hora_ppo
 """,
-        root / "conf" / "ppo" / "task" / "go1" / "motrix_lab.yaml": """
+        root / "conf" / "ppo" / "task" / "go1" / "go1_joystick_flat" / "motrix_lab.yaml": """
 training:
   task_name: Go1
   sim_backend: motrix
 """,
-        root / "conf" / "ppo" / "task" / "go2" / "mujoco_lab.yaml": """
+        root / "conf" / "ppo" / "task" / "go2" / "go2_joystick_flat" / "mujoco_lab.yaml": """
 training:
   task_name: Go2
   sim_backend: mujoco
 """,
-        root / "conf" / "ppo" / "task" / "go3" / "mujoco_custom.yaml": """
+        root / "conf" / "ppo" / "task" / "sharpa" / "sharpa_inhand" / "mujoco_custom.yaml": """
 training:
-  task_name: Go3
+  task_name: SharpaInhand
   sim_backend: mujoco
   log_root: custom_logs
 """,
@@ -61,7 +61,7 @@ training:
         root / "logs" / "rsl_rl_ppo" / "Go1" / "2026-01-02_00-00-00_mujoco",
         root / "logs" / "rsl_rl_ppo" / "Go2" / "2026-02-01_00-00-00_mujoco",
         root / "logs" / "hora_ppo" / "Go1" / "2026-03-01_00-00-00_mujoco",
-        root / "custom_logs" / "Go3" / "2026-04-01_00-00-00_mujoco",
+        root / "custom_logs" / "SharpaInhand" / "2026-04-01_00-00-00_mujoco",
     ]:
         path.mkdir(parents=True)
 
@@ -118,7 +118,7 @@ def test_eval_load_run_value_position_completes_task_run_dirs(tmp_path: Path) ->
             "--algo",
             "ppo",
             "--task",
-            "go1",
+            "go1_joystick_flat",
             "--sim",
             "mujoco",
             "--load-run",
@@ -135,7 +135,7 @@ def test_eval_load_run_value_position_completes_task_run_dirs(tmp_path: Path) ->
             "--algo",
             "ppo",
             "--task",
-            "go1",
+            "go1_joystick_flat",
             "--sim",
             "mujoco",
             "--load-run",
@@ -158,7 +158,7 @@ def test_eval_load_run_completion_respects_profile_log_name(tmp_path: Path) -> N
             "--algo",
             "ppo",
             "--task",
-            "go1",
+            "go1_joystick_flat",
             "--sim",
             "mujoco",
             "--profile",
@@ -183,7 +183,7 @@ def test_eval_load_run_completion_respects_training_log_root(tmp_path: Path) -> 
             "--algo",
             "ppo",
             "--task",
-            "go3",
+            "sharpa_inhand",
             "--sim",
             "mujoco",
             "--profile",
@@ -220,7 +220,7 @@ def test_train_profile_value_position_completes_profile_names(tmp_path: Path) ->
             "--algo",
             "ppo",
             "--task",
-            "go1",
+            "go1_joystick_flat",
             "--sim",
             "mujoco",
             "--profile",
@@ -237,7 +237,7 @@ def test_train_profile_value_position_completes_profile_names(tmp_path: Path) ->
             "--algo",
             "ppo",
             "--task",
-            "go1",
+            "go1_joystick_flat",
             "--sim",
             "motrix",
             "--profile",
@@ -273,7 +273,7 @@ def test_task_completion_respects_selected_profile(tmp_path: Path) -> None:
         ],
         10,
         metadata,
-    ) == ["go1"]
+    ) == ["go1_joystick_flat"]
 
 
 def test_demo_positional_completes_all_demo_names(tmp_path: Path) -> None:

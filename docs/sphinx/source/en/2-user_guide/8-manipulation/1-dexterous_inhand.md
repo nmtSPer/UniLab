@@ -13,10 +13,10 @@ owner is `allegro_inhand`, and grasp-cache generation uses
 
 Owner evidence:
 
-- `conf/ppo/task/allegro_inhand/mujoco.yaml`
-- `conf/ppo/task/allegro_inhand/motrix.yaml`
-- `conf/ppo/task/allegro_inhand_grasp/mujoco.yaml`
-- `conf/ppo/task/allegro_inhand_grasp/motrix.yaml`
+- `conf/ppo/task/allegro/allegro_inhand/mujoco.yaml`
+- `conf/ppo/task/allegro/allegro_inhand/motrix.yaml`
+- `conf/ppo/task/allegro/allegro_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/allegro/allegro_inhand_grasp/motrix.yaml`
 - `conf/appo/task/allegro_inhand/mujoco.yaml`
 - `conf/appo/task/allegro_inhand/motrix.yaml`
 
@@ -57,9 +57,9 @@ in training paths are MuJoCo owner paths.
 
 Owner evidence:
 
-- `conf/ppo/task/sharpa_inhand/mujoco.yaml`
-- `conf/ppo/task/sharpa_inhand/mujoco_hora.yaml`
-- `conf/ppo/task/sharpa_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco_hora.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand_grasp/mujoco.yaml`
 - `conf/appo/task/sharpa_inhand/mujoco.yaml`
 - `conf/appo/task/sharpa_inhand/mujoco_hora.yaml`
 - `conf/hora_distill/task/sharpa_inhand/mujoco.yaml`

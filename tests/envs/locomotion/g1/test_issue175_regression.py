@@ -21,7 +21,7 @@ _G1_OWNER_CASES = [
     {
         "id": "ppo_mujoco",
         "config_group": "ppo",
-        "overrides": ["task=g1_walk_flat/mujoco"],
+        "overrides": ["task=g1/g1_walk_flat/mujoco"],
         "task_name": "G1WalkFlat",
         "backend": "mujoco",
         "profile": "legacy",
@@ -31,7 +31,7 @@ _G1_OWNER_CASES = [
     {
         "id": "ppo_motrix",
         "config_group": "ppo",
-        "overrides": ["task=g1_walk_flat/motrix"],
+        "overrides": ["task=g1/g1_walk_flat/motrix"],
         "task_name": "G1WalkFlat",
         "backend": "motrix",
         "profile": "legacy",

@@ -1,7 +1,7 @@
 # @package _global_
 teacher:
   algo_family: ppo
-  task: sharpa_inhand/mujoco_hora
+  task: sharpa/sharpa_inhand/mujoco_hora
 
 training:
   task_name: SharpaInhandRotation

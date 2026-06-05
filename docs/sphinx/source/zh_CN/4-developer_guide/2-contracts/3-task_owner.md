@@ -29,7 +29,7 @@
 
 ## 仓库中的证据
 
-- PPO owner 示例：`conf/ppo/task/go2_joystick_flat/mujoco.yaml`
+- PPO owner 示例：`conf/ppo/task/go2/go2_joystick_flat/mujoco.yaml`
 - APPO config 根目录：`conf/appo/config.yaml`
 - Off-policy config 根目录：`conf/offpolicy/config.yaml`
 - Off-policy task/algo guard：`src/unilab/training/common.py`

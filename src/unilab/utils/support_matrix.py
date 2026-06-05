@@ -95,14 +95,14 @@ ENTRYPOINT_SPECS: tuple[EntrypointSpec, ...] = (
         entrypoint_id="ppo_torch",
         label="PPO (torch)",
         config_dir="conf/ppo/task",
-        task_glob="*/*.yaml",
+        task_glob="*/*/*.yaml",
         generic_tested=True,
     ),
     EntrypointSpec(
         entrypoint_id="ppo_mlx",
         label="PPO (mlx)",
         config_dir="conf/ppo/task",
-        task_glob="*/*.yaml",
+        task_glob="*/*/*.yaml",
         generic_tested=False,
     ),
     EntrypointSpec(

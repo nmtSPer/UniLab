@@ -26,6 +26,28 @@ from unilab.visualization.playback import render_play_mode
 
 _ROOT_DIR = Path(__file__).resolve().parents[2]
 _CONF_DIR = _ROOT_DIR / "conf"
+_PPO_TASK_ROBOT_PREFIXES = (
+    ("go2w_", "go2w"),
+    ("go2_", "go2"),
+    ("go1_", "go1"),
+    ("g1_", "g1"),
+    ("allegro_", "allegro"),
+    ("sharpa_", "sharpa"),
+)
+
+
+def _normalize_ppo_task_override(override: str) -> str:
+    if not override.startswith("task="):
+        return override
+    task_choice = override.split("=", 1)[1]
+    parts = task_choice.split("/")
+    if len(parts) != 2:
+        return override
+    task_name, owner = parts
+    for prefix, robot in _PPO_TASK_ROBOT_PREFIXES:
+        if task_name.startswith(prefix):
+            return f"task={robot}/{task_name}/{owner}"
+    return override
 
 
 def _resolve_low_level_playback_flags(kwargs: dict[str, object]) -> dict[str, object]:
@@ -53,7 +75,7 @@ def _normalize_overrides(overrides: list[str] | None, *, offpolicy: bool = False
             continue
         if override.startswith("task="):
             task_selected = True
-            normalized.append(override)
+            normalized.append(override if offpolicy else _normalize_ppo_task_override(override))
             continue
         normalized.append(override)
 
@@ -61,7 +83,7 @@ def _normalize_overrides(overrides: list[str] | None, *, offpolicy: bool = False
         if offpolicy:
             normalized.append(f"task={algo}/g1_walk_flat/mujoco")
         else:
-            normalized.append("task=go1_joystick_flat/mujoco")
+            normalized.append("task=go1/go1_joystick_flat/mujoco")
     return normalized
 
 

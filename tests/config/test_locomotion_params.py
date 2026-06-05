@@ -318,7 +318,7 @@ def test_ppo_go2_joystick_rough_task_compose():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=go2_joystick_rough/mujoco"])
+        cfg = compose("config", overrides=["task=go2/go2_joystick_rough/mujoco"])
     assert cfg.training.task_name == "Go2JoystickRough"
     assert cfg.training.sim_backend == "mujoco"
 
@@ -329,7 +329,7 @@ def test_ppo_go2_joystick_rough_motrix_task_compose():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=go2_joystick_rough/motrix"])
+        cfg = compose("config", overrides=["task=go2/go2_joystick_rough/motrix"])
     assert cfg.training.task_name == "Go2JoystickRough"
     assert cfg.training.sim_backend == "motrix"
     assert cfg.algo.num_envs == 4096
@@ -384,7 +384,7 @@ def test_g1_task_owner_yamls_preserve_legacy_and_walk_observation_profiles():
         env._reward_cfg = cfg.reward
         return bool(env._uses_walk_observation_profile())
 
-    assert uses_walk_profile("ppo", ["task=g1_walk_flat/mujoco"]) is False
+    assert uses_walk_profile("ppo", ["task=g1/g1_walk_flat/mujoco"]) is False
     assert uses_walk_profile("appo", ["task=g1_walk_flat/mujoco"]) is False
     assert uses_walk_profile("offpolicy", ["algo=sac", "task=sac/g1_walk_flat/mujoco"]) is True
     assert uses_walk_profile("offpolicy", ["algo=sac", "task=sac/g1_walk_flat/motrix"]) is True
@@ -438,7 +438,7 @@ def test_ppo_go1_max_iterations():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=go1_joystick_flat/mujoco"])
+        cfg = compose("config", overrides=["task=go1/go1_joystick_flat/mujoco"])
     assert cfg.algo.max_iterations == 151
     assert "actor" in cfg.algo.obs_groups
     assert cfg.algo.algorithm.enable_compile is False
@@ -453,7 +453,7 @@ def test_ppo_compile_overrides():
         cfg = compose(
             "config",
             overrides=[
-                "task=go1_joystick_flat/mujoco",
+                "task=go1/go1_joystick_flat/mujoco",
                 "algo.algorithm.enable_compile=false",
             ],
         )
@@ -466,7 +466,7 @@ def test_ppo_g1_num_envs():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_walk_flat/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_walk_flat/mujoco"])
     assert cfg.algo.num_envs == 2048
     assert cfg.algo.max_iterations == 2200
     assert cfg.training.task_name == "G1WalkFlat"
@@ -480,7 +480,7 @@ def test_ppo_go2_num_envs():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=go2_joystick_flat/mujoco"])
+        cfg = compose("config", overrides=["task=go2/go2_joystick_flat/mujoco"])
     assert cfg.algo.num_envs == 1024
     assert cfg.algo.max_iterations == 151
 
@@ -491,7 +491,7 @@ def test_ppo_go2_footstand_uses_teacher_linvel_task():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=go2_footstand/mujoco"])
+        cfg = compose("config", overrides=["task=go2/go2_footstand/mujoco"])
 
     assert cfg.training.task_name == "Go2FootStand"
     assert cfg.training.sim_backend == "mujoco"
@@ -516,7 +516,7 @@ def test_ppo_g1_motion_tracking():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_motion_tracking/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_motion_tracking/mujoco"])
     assert cfg.training.task_name == "G1MotionTracking"
     assert cfg.algo.max_iterations == 15000
     assert cfg.algo.algorithm.entropy_coef == pytest.approx(0.005)
@@ -528,7 +528,7 @@ def test_ppo_g1_motion_tracking_deploy():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_motion_tracking_deploy/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_motion_tracking_deploy/mujoco"])
     assert cfg.training.task_name == "G1MotionTrackingDeploy"
     assert cfg.algo.max_iterations == 15000
     assert cfg.algo.algorithm.entropy_coef == pytest.approx(0.005)
@@ -543,7 +543,7 @@ def test_ppo_g1_box_tracking():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_box_tracking/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_box_tracking/mujoco"])
     assert cfg.training.task_name == "G1BoxTracking"
     assert cfg.algo.max_iterations == 30000
     assert cfg.algo.algorithm.entropy_coef == pytest.approx(0.005)
@@ -559,7 +559,7 @@ def test_ppo_g1_flip_tracking():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_flip_tracking/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_flip_tracking/mujoco"])
     assert cfg.training.task_name == "G1FlipTracking"
     assert cfg.algo.num_envs == 1024
     assert cfg.algo.max_iterations == 20000
@@ -588,7 +588,7 @@ def test_ppo_g1_wall_flip_tracking():
 
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(CONF_DIR / "ppo"), version_base="1.3"):
-        cfg = compose("config", overrides=["task=g1_wall_flip_tracking/mujoco"])
+        cfg = compose("config", overrides=["task=g1/g1_wall_flip_tracking/mujoco"])
     assert cfg.training.task_name == "G1WallFlipTracking"
     assert cfg.algo.num_envs == 1024
     assert cfg.algo.max_iterations == 20000
@@ -665,7 +665,7 @@ def test_ppo_go2_joystick_rough_hydra_terrain_override():
         cfg = compose(
             "config",
             overrides=[
-                "task=go2_joystick_rough/mujoco",
+                "task=go2/go2_joystick_rough/mujoco",
                 "env.scene.terrain.generator.num_rows=4",
                 "env.scene.terrain.generator.num_cols=6",
                 "env.scene.terrain.generator.seed=42",

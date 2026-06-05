@@ -31,7 +31,7 @@ uv run train --algo sac --task g1_walk_flat --sim mujoco
 
 `go2_footstand` 是 Go2 前足站立任务，**仅支持 MuJoCo**。
 
-- PPO 配置：`conf/ppo/task/go2_footstand/mujoco.yaml`
+- PPO 配置：`conf/ppo/task/go2/go2_footstand/mujoco.yaml`
 - 环境注册名：`Go2FootStand`（注册于 `sim_backend="mujoco"`）
 - 环境实现：`src/unilab/envs/locomotion/go2/footstand.py`（继承 Go2 handstand 任务）
 - Go2 模型 XML：`src/unilab/assets/robots/go2/go2.xml`
@@ -76,7 +76,7 @@ gyro(3) + accelerometer(3) + linvel(3) + global_angvel(3) + dof_pos(12) + dof_ve
 
 ### 奖励与终止项
 
-默认奖励来自 `conf/ppo/task/go2_footstand/mujoco.yaml`。奖励权重包括站立 `height`、
+默认奖励来自 `conf/ppo/task/go2/go2_footstand/mujoco.yaml`。奖励权重包括站立 `height`、
 `orientation`、`rear_feet_contact`、前腿目标角度（`tar`）、`action_rate`、
 `dof_pos_limits`、`front_leg_motion`、`rear_leg_symmetry`、`knee_clearance`、
 `upright_stability`、`stay_still`、`pose`，以及 `energy` 和 `dof_acc` 惩罚；

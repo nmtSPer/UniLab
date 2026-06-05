@@ -2,7 +2,7 @@
 
 `go2_arm_manip_loco` combines Go2 locomotion with the Airbot arm. The registered
 env is `Go2ArmManipLoco`, the PPO owner is
-`conf/ppo/task/go2_arm_manip_loco/mujoco.yaml`, and the HIM-PPO owner is
+`conf/ppo/task/go2/go2_arm_manip_loco/mujoco.yaml`, and the HIM-PPO owner is
 `conf/ppo_him/task/go2_arm_manip_loco/mujoco.yaml`.
 
 ## PPO

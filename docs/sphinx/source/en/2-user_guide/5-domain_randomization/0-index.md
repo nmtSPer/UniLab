@@ -210,8 +210,8 @@ This boundary exists to honor the cold-path asset/model-metadata access principl
 
 Sharpa-hand is the current example task for `geom_size` init-lifecycle DR in the repo. Related task configs:
 
-- `conf/ppo/task/sharpa_inhand/mujoco.yaml`
-- `conf/ppo/task/sharpa_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand_grasp/mujoco.yaml`
 
 ### 1. Config Entry
 

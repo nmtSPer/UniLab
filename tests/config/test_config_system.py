@@ -55,6 +55,8 @@ def _normalize_overrides(algo_dir: str, overrides: list[str] | None) -> list[str
     if not task_selected:
         if algo_dir == "offpolicy":
             normalized.append(f"task={algo}/g1_walk_flat/mujoco")
+        elif algo_dir == "ppo":
+            normalized.append("task=go1/go1_joystick_flat/mujoco")
         else:
             normalized.append("task=go1_joystick_flat/mujoco")
 
@@ -74,32 +76,38 @@ def _supported_task_cases() -> list[tuple[str, str, str, str, str, list[str]]]:
 
     for algo_dir in ["ppo", "appo"]:
         root = CONF_DIR / algo_dir / "task"
-        for task_dir in sorted(path for path in root.iterdir() if path.is_dir()):
-            for backend_file in sorted(task_dir.glob("*.yaml")):
-                expected_backend = _expected_backend_from_variant(backend_file.stem)
-                if expected_backend is None:
-                    continue
+        task_files = (
+            sorted(root.glob("*/*/*.yaml"))
+            if algo_dir == "ppo"
+            else sorted(root.glob("*/*.yaml"))
+        )
+        for backend_file in task_files:
+            task_dir = backend_file.parent
+            task_choice = backend_file.with_suffix("").relative_to(root).as_posix()
+            expected_backend = _expected_backend_from_variant(backend_file.stem)
+            if expected_backend is None:
+                continue
+            cases.append(
+                (
+                    algo_dir,
+                    "config",
+                    task_dir.name,
+                    expected_backend,
+                    str(backend_file.relative_to(CONF_DIR)),
+                    [f"task={task_choice}"],
+                )
+            )
+            if algo_dir == "ppo" and task_dir.name in _PPO_MLX_TASKS:
                 cases.append(
                     (
                         algo_dir,
-                        "config",
+                        "config_mlx",
                         task_dir.name,
                         expected_backend,
                         str(backend_file.relative_to(CONF_DIR)),
-                        [f"task={task_dir.name}/{backend_file.stem}"],
+                        [f"task={task_choice}"],
                     )
                 )
-                if algo_dir == "ppo" and task_dir.name in _PPO_MLX_TASKS:
-                    cases.append(
-                        (
-                            algo_dir,
-                            "config_mlx",
-                            task_dir.name,
-                            expected_backend,
-                            str(backend_file.relative_to(CONF_DIR)),
-                            [f"task={task_dir.name}/{backend_file.stem}"],
-                        )
-                    )
 
     offpolicy_root = CONF_DIR / "offpolicy" / "task"
     for algo_root in sorted(path for path in offpolicy_root.iterdir() if path.is_dir()):
@@ -203,7 +211,7 @@ def test_supported_task_composes(
 
 
 def test_ppo_go2_arm_manip_loco_motrix_preserves_backend_overrides():
-    cfg = _compose("ppo", overrides=["task=go2_arm_manip_loco/motrix"])
+    cfg = _compose("ppo", overrides=["task=go2/go2_arm_manip_loco/motrix"])
 
     assert cfg.training.task_name == "Go2ArmManipLoco"
     assert cfg.training.sim_backend == "motrix"
@@ -275,8 +283,8 @@ def test_offpolicy_g1_walk_flat_motrix_preserves_backend_specific_algo_value():
 
 
 def test_ppo_g1_backend_specific_hyperparams_remain_separate():
-    mujoco_cfg = _compose("ppo", overrides=["task=g1_walk_flat/mujoco"])
-    motrix_cfg = _compose("ppo", overrides=["task=g1_walk_flat/motrix"])
+    mujoco_cfg = _compose("ppo", overrides=["task=g1/g1_walk_flat/mujoco"])
+    motrix_cfg = _compose("ppo", overrides=["task=g1/g1_walk_flat/motrix"])
 
     assert mujoco_cfg.algo.max_iterations == 2200
     assert mujoco_cfg.algo.empirical_normalization is False
@@ -309,7 +317,7 @@ def test_ppo_g1_backend_specific_hyperparams_remain_separate():
 @pytest.mark.parametrize(
     ("algo_dir", "overrides"),
     [
-        ("ppo", ["task=g1_walk_flat/mujoco"]),
+        ("ppo", ["task=g1/g1_walk_flat/mujoco"]),
         ("ppo_him", ["task=go2_arm_manip_loco/mujoco"]),
         ("appo", ["task=g1_walk_flat/mujoco"]),
         ("offpolicy", ["algo=sac", "task=sac/g1_walk_flat/mujoco"]),
@@ -326,9 +334,9 @@ def test_post_step_forward_sensor_defaults_false_outside_sharpa_mujoco(
 @pytest.mark.parametrize(
     ("algo_dir", "overrides"),
     [
-        ("ppo", ["task=sharpa_inhand/mujoco"]),
-        ("ppo", ["task=sharpa_inhand/mujoco_hora"]),
-        ("ppo", ["task=sharpa_inhand_grasp/mujoco"]),
+        ("ppo", ["task=sharpa/sharpa_inhand/mujoco"]),
+        ("ppo", ["task=sharpa/sharpa_inhand/mujoco_hora"]),
+        ("ppo", ["task=sharpa/sharpa_inhand_grasp/mujoco"]),
         ("appo", ["task=sharpa_inhand/mujoco"]),
         ("appo", ["task=sharpa_inhand/mujoco_hora"]),
         ("offpolicy", ["algo=sac", "task=sac/sharpa_inhand/mujoco_hora"]),
@@ -351,7 +359,7 @@ def test_mujoco_post_step_forward_sensor_can_be_overridden():
 
 
 def test_ppo_go1_motrix_preserves_reward_and_algo_values():
-    cfg = _compose("ppo", overrides=["task=go1_joystick_flat/motrix"])
+    cfg = _compose("ppo", overrides=["task=go1/go1_joystick_flat/motrix"])
 
     assert cfg.algo.max_iterations == 151
     assert cfg.algo.empirical_normalization is True
@@ -362,7 +370,7 @@ def test_ppo_go1_motrix_preserves_reward_and_algo_values():
 
 
 def test_ppo_go2_motrix_preserves_backend_env_overrides():
-    cfg = _compose("ppo", overrides=["task=go2_joystick_flat/motrix"])
+    cfg = _compose("ppo", overrides=["task=go2/go2_joystick_flat/motrix"])
 
     assert cfg.algo.num_envs == 1024
     assert cfg.algo.empirical_normalization is True
@@ -371,7 +379,7 @@ def test_ppo_go2_motrix_preserves_backend_env_overrides():
 
 
 def test_ppo_go2w_mujoco_uses_motor_owner_dr_path():
-    cfg = _compose("ppo", overrides=["task=go2w_joystick_flat/mujoco"])
+    cfg = _compose("ppo", overrides=["task=go2w/go2w_joystick_flat/mujoco"])
 
     assert cfg.training.task_name == "Go2WJoystickFlat"
     assert cfg.training.sim_backend == "mujoco"
@@ -391,7 +399,7 @@ def test_ppo_go2w_mujoco_uses_motor_owner_dr_path():
 
 
 def test_ppo_go2w_motrix_uses_motor_owner_dr_path():
-    cfg = _compose("ppo", overrides=["task=go2w_joystick_flat/motrix"])
+    cfg = _compose("ppo", overrides=["task=go2w/go2w_joystick_flat/motrix"])
 
     assert cfg.training.task_name == "Go2WJoystickFlat"
     assert cfg.training.sim_backend == "motrix"
@@ -411,7 +419,7 @@ def test_ppo_go2w_motrix_uses_motor_owner_dr_path():
 
 
 def test_ppo_go2w_motrix_uses_motor_owner_scene_path():
-    cfg = _compose("ppo", overrides=["task=go2w_joystick_flat/motrix"])
+    cfg = _compose("ppo", overrides=["task=go2w/go2w_joystick_flat/motrix"])
 
     assert cfg.training.task_name == "Go2WJoystickFlat"
     assert cfg.training.sim_backend == "motrix"
@@ -423,7 +431,7 @@ def test_ppo_go2w_motrix_uses_motor_owner_scene_path():
 
 
 def test_ppo_go2w_rough_mujoco_uses_terrain_generator():
-    cfg = _compose("ppo", overrides=["task=go2w_joystick_rough/mujoco"])
+    cfg = _compose("ppo", overrides=["task=go2w/go2w_joystick_rough/mujoco"])
 
     assert cfg.training.task_name == "Go2WJoystickRough"
     assert cfg.training.sim_backend == "mujoco"
@@ -452,7 +460,7 @@ def test_ppo_go2w_rough_mujoco_uses_terrain_generator():
 
 
 def test_ppo_go2w_rough_motrix_uses_yaw_reset_and_strong_control():
-    cfg = _compose("ppo", overrides=["task=go2w_joystick_rough/motrix"])
+    cfg = _compose("ppo", overrides=["task=go2w/go2w_joystick_rough/motrix"])
 
     assert cfg.training.task_name == "Go2WJoystickRough"
     assert cfg.training.sim_backend == "motrix"
@@ -501,7 +509,7 @@ def test_offpolicy_flashsac_go2_joystick_mujoco_enables_full_dr_stack():
 def test_cli_override_beats_task_defaults():
     cfg = _compose(
         "ppo",
-        overrides=["task=g1_walk_flat/motrix", "algo.max_iterations=1"],
+        overrides=["task=g1/g1_walk_flat/motrix", "algo.max_iterations=1"],
     )
 
     assert cfg.algo.max_iterations == 1

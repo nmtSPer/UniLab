@@ -33,9 +33,25 @@ DEMO_REGISTRY: dict[str, DemoSpec] = {
     "teaser": DemoSpec(algo="", task="", sim="", entry="teaser"),
 }
 
+PPO_TASK_ROBOT_PREFIXES = (
+    ("go2w_", "go2w"),
+    ("go2_", "go2"),
+    ("go1_", "go1"),
+    ("g1_", "g1"),
+    ("allegro_", "allegro"),
+    ("sharpa_", "sharpa"),
+)
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
+
+
+def _ppo_owner_task(task: str) -> str:
+    for prefix, robot in PPO_TASK_ROBOT_PREFIXES:
+        if task.startswith(prefix):
+            return f"{robot}/{task}"
+    return task
 
 
 def get_demo_spec(demo_name: str) -> DemoSpec:
@@ -67,7 +83,8 @@ def _build_play_interactive_command(
     script = selected_root / "scripts" / "play_interactive.py"
     if not script.is_file():
         raise SystemExit(f"Entrypoint script not found: {script}")
-    owner_yaml = selected_root / "conf" / spec.algo / "task" / spec.task / f"{spec.sim}.yaml"
+    owner_task = _ppo_owner_task(spec.task) if spec.algo == "ppo" else spec.task
+    owner_yaml = selected_root / "conf" / spec.algo / "task" / owner_task / f"{spec.sim}.yaml"
     if not owner_yaml.is_file():
         raise SystemExit(
             f"No owner config exists for algo={spec.algo}, task={spec.task}, sim={spec.sim}: "
@@ -76,7 +93,7 @@ def _build_play_interactive_command(
     return [
         sys.executable,
         str(script),
-        f"task={spec.task}/{spec.sim}",
+        f"task={owner_task}/{spec.sim}",
         f"algo.load_run={checkpoint_path}",
         *extra_overrides,
     ]

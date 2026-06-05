@@ -5,7 +5,7 @@ env is `Go2ArmManipLoco`.
 
 ## Owner Configs
 
-- PPO owner: `conf/ppo/task/go2_arm_manip_loco/mujoco.yaml`
+- PPO owner: `conf/ppo/task/go2/go2_arm_manip_loco/mujoco.yaml`
 - HIM-PPO owner: `conf/ppo_him/task/go2_arm_manip_loco/mujoco.yaml`
 - Scene entry: `src/unilab/assets/robots/go2_arm/scene_flat.xml`
 

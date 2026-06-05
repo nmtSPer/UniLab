@@ -15,11 +15,11 @@ G1 动作追踪任务位于 `src/unilab/envs/motion_tracking/` 下，并通过
 
 | CLI Task | Registered Env | 默认 motion | Owner Evidence |
 | --- | --- | --- | --- |
-| `g1_motion_tracking` | `G1MotionTracking` | `dance1_subject2_part.npz` | `conf/ppo/task/g1_motion_tracking/`, `conf/appo/task/g1_motion_tracking/` |
-| `g1_flip_tracking` | `G1FlipTracking` | `flip_360_001__A304.npz` | `conf/ppo/task/g1_flip_tracking/`, `conf/appo/task/g1_flip_tracking/` |
-| `g1_wall_flip_tracking` | `G1WallFlipTracking` | `flip_from_wall_104__A304.npz` | `conf/ppo/task/g1_wall_flip_tracking/`, `conf/appo/task/g1_wall_flip_tracking/` |
-| `g1_climb_tracking` | G1 climb tracking env | 由 env 配置给出 | `conf/ppo/task/g1_climb_tracking/`, `conf/appo/task/g1_climb_tracking/` |
-| `g1_box_tracking` | G1 box tracking env | 由 env 配置给出 | `conf/ppo/task/g1_box_tracking/` |
+| `g1_motion_tracking` | `G1MotionTracking` | `dance1_subject2_part.npz` | `conf/ppo/task/g1/g1_motion_tracking/`, `conf/appo/task/g1_motion_tracking/` |
+| `g1_flip_tracking` | `G1FlipTracking` | `flip_360_001__A304.npz` | `conf/ppo/task/g1/g1_flip_tracking/`, `conf/appo/task/g1_flip_tracking/` |
+| `g1_wall_flip_tracking` | `G1WallFlipTracking` | `flip_from_wall_104__A304.npz` | `conf/ppo/task/g1/g1_wall_flip_tracking/`, `conf/appo/task/g1_wall_flip_tracking/` |
+| `g1_climb_tracking` | G1 climb tracking env | 由 env 配置给出 | `conf/ppo/task/g1/g1_climb_tracking/`, `conf/appo/task/g1_climb_tracking/` |
+| `g1_box_tracking` | G1 box tracking env | 由 env 配置给出 | `conf/ppo/task/g1/g1_box_tracking/` |
 | `g1_wbt_obs` | `G1MotionTrackingSAC` | 与 `g1_motion_tracking` 共用 | `conf/offpolicy/task/sac/g1_wbt_obs/mujoco.yaml` |
 
 默认值在代码中设定：`dance1_subject2_part.npz`（`g1/tracking.py`），

@@ -8,10 +8,10 @@ Allegro 旋转使用已注册的 env `AllegroInhandRotation`。旋转 owner 是 
 
 Owner 证据：
 
-- `conf/ppo/task/allegro_inhand/mujoco.yaml`
-- `conf/ppo/task/allegro_inhand/motrix.yaml`
-- `conf/ppo/task/allegro_inhand_grasp/mujoco.yaml`
-- `conf/ppo/task/allegro_inhand_grasp/motrix.yaml`
+- `conf/ppo/task/allegro/allegro_inhand/mujoco.yaml`
+- `conf/ppo/task/allegro/allegro_inhand/motrix.yaml`
+- `conf/ppo/task/allegro/allegro_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/allegro/allegro_inhand_grasp/motrix.yaml`
 - `conf/appo/task/allegro_inhand/mujoco.yaml`
 - `conf/appo/task/allegro_inhand/motrix.yaml`
 
@@ -49,9 +49,9 @@ Sharpa 旋转使用已注册的 env `SharpaInhandRotation`。当前已提交的�
 
 Owner 证据：
 
-- `conf/ppo/task/sharpa_inhand/mujoco.yaml`
-- `conf/ppo/task/sharpa_inhand/mujoco_hora.yaml`
-- `conf/ppo/task/sharpa_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco_hora.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand_grasp/mujoco.yaml`
 - `conf/appo/task/sharpa_inhand/mujoco.yaml`
 - `conf/appo/task/sharpa_inhand/mujoco_hora.yaml`
 - `conf/hora_distill/task/sharpa_inhand/mujoco.yaml`

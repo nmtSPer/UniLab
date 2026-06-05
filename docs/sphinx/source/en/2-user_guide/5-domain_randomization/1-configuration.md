@@ -48,9 +48,9 @@ uv run train --algo ppo --task g1_walk_flat --sim mujoco \
 ## Owner-Local Defaults
 
 Keep ranges in the task owner YAML when they are part of the task contract. For
-example, `conf/ppo/task/go2_joystick_rough/mujoco.yaml` enables base mass,
+example, `conf/ppo/task/go2/go2_joystick_rough/mujoco.yaml` enables base mass,
 center-of-mass, kp/kd, and push randomization, while
-`conf/ppo/task/sharpa_inhand/mujoco.yaml` configures object scale, friction, and
+`conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml` configures object scale, friction, and
 force disturbance for Sharpa.
 
 For the full current inventory, see {doc}`0-index`.

@@ -27,9 +27,33 @@ from unilab.base.backend.motrix.playback import run_motrix_playback
 _SCRIPTS_DIR = Path(__file__).parent.parent.parent / "scripts"
 _CONF_DIR = Path(__file__).parent.parent.parent / "conf"
 _SRC_DIR = Path(__file__).parent.parent.parent / "src"
+_PPO_TASK_ROBOT_PREFIXES = (
+    ("go2w_", "go2w"),
+    ("go2_", "go2"),
+    ("go1_", "go1"),
+    ("g1_", "g1"),
+    ("allegro_", "allegro"),
+    ("sharpa_", "sharpa"),
+)
 
 
-def _normalize_overrides(overrides: list[str] | None, *, offpolicy: bool = False) -> list[str]:
+def _normalize_ppo_task_override(override: str) -> str:
+    if not override.startswith("task="):
+        return override
+    task_choice = override.split("=", 1)[1]
+    parts = task_choice.split("/")
+    if len(parts) != 2:
+        return override
+    task_name, owner = parts
+    for prefix, robot in _PPO_TASK_ROBOT_PREFIXES:
+        if task_name.startswith(prefix):
+            return f"task={robot}/{task_name}/{owner}"
+    return override
+
+
+def _normalize_overrides(
+    overrides: list[str] | None, *, offpolicy: bool = False, ppo: bool = False
+) -> list[str]:
     normalized: list[str] = []
     algo = "sac"
     task_selected = False
@@ -41,13 +65,15 @@ def _normalize_overrides(overrides: list[str] | None, *, offpolicy: bool = False
             continue
         if override.startswith("task="):
             task_selected = True
-            normalized.append(override)
+            normalized.append(_normalize_ppo_task_override(override) if ppo else override)
             continue
         normalized.append(override)
 
     if not task_selected:
         if offpolicy:
             normalized.append(f"task={algo}/g1_walk_flat/mujoco")
+        elif ppo:
+            normalized.append("task=go1/go1_joystick_flat/mujoco")
         else:
             normalized.append("task=go1_joystick_flat/mujoco")
     return normalized
@@ -139,7 +165,7 @@ def _offpolicy_cfg(overrides=None):
 def _ppo_cfg(overrides=None):
     GlobalHydra.instance().clear()
     with initialize_config_dir(config_dir=str(_CONF_DIR / "ppo"), version_base="1.3"):
-        return compose("config", overrides=_normalize_overrides(overrides))
+        return compose("config", overrides=_normalize_overrides(overrides, ppo=True))
 
 
 def _appo_cfg(overrides=None):
@@ -381,11 +407,12 @@ def test_hora_distill_teacher_owner_defaults_support_ppo_appo_and_sac(
     teacher_algo_family: str,
 ):
     mod = _train_hora_distill()
-    teacher_task = (
-        "sac/sharpa_inhand/mujoco_hora"
-        if teacher_algo_family == "sac"
-        else "sharpa_inhand/mujoco_hora"
-    )
+    if teacher_algo_family == "sac":
+        teacher_task = "sac/sharpa_inhand/mujoco_hora"
+    elif teacher_algo_family == "ppo":
+        teacher_task = "sharpa/sharpa_inhand/mujoco_hora"
+    else:
+        teacher_task = "sharpa_inhand/mujoco_hora"
     cfg = mod._apply_teacher_defaults(
         _hora_distill_cfg(
             [

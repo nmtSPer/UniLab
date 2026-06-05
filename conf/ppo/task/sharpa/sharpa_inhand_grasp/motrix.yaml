@@ -1,6 +1,6 @@
 # @package _global_
 defaults:
-  - /task/sharpa_inhand_grasp/mujoco
+  - /task/sharpa/sharpa_inhand_grasp/mujoco
   - _self_
 
 training:

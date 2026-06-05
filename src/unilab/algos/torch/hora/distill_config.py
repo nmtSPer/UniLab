@@ -11,6 +11,14 @@ from omegaconf import DictConfig, OmegaConf
 from unilab.training.run import resolve_task_checkpoint_path
 
 _REPO_ROOT = Path(__file__).resolve().parents[5]
+_PPO_TASK_ROBOT_PREFIXES = (
+    ("go2w_", "go2w"),
+    ("go2_", "go2"),
+    ("go1_", "go1"),
+    ("g1_", "g1"),
+    ("allegro_", "allegro"),
+    ("sharpa_", "sharpa"),
+)
 
 
 def _root(root_dir: str | Path | None) -> Path:
@@ -29,6 +37,17 @@ def _sanitize_path_token(value: str, *, fallback: str) -> str:
     return sanitized or fallback
 
 
+def _ppo_owner_task(task: str) -> str:
+    parts = task.split("/")
+    if len(parts) != 2:
+        return task
+    task_name, owner = parts
+    for prefix, robot in _PPO_TASK_ROBOT_PREFIXES:
+        if task_name.startswith(prefix):
+            return f"{robot}/{task_name}/{owner}"
+    return task
+
+
 def _teacher_config_paths(
     algo_family: str,
     task: str,
@@ -43,6 +62,8 @@ def _teacher_config_paths(
             root / "conf" / "offpolicy",
             root / "conf" / "offpolicy" / "algo" / "sac.yaml",
         )
+    if algo_family == "ppo":
+        task = _ppo_owner_task(task)
     return (
         root / "conf" / algo_family / "task" / f"{task}.yaml",
         root / "conf" / algo_family,

@@ -17,11 +17,11 @@ Each task ships a default motion clip defined in the env config dataclass:
 
 | CLI Task | Registered Env | Default Motion | Owner Evidence |
 | --- | --- | --- | --- |
-| `g1_motion_tracking` | `G1MotionTracking` | `dance1_subject2_part.npz` | `conf/ppo/task/g1_motion_tracking/`, `conf/appo/task/g1_motion_tracking/` |
-| `g1_flip_tracking` | `G1FlipTracking` | `flip_360_001__A304.npz` | `conf/ppo/task/g1_flip_tracking/`, `conf/appo/task/g1_flip_tracking/` |
-| `g1_wall_flip_tracking` | `G1WallFlipTracking` | `flip_from_wall_104__A304.npz` | `conf/ppo/task/g1_wall_flip_tracking/`, `conf/appo/task/g1_wall_flip_tracking/` |
-| `g1_climb_tracking` | G1 climb tracking env | clip from env config | `conf/ppo/task/g1_climb_tracking/`, `conf/appo/task/g1_climb_tracking/` |
-| `g1_box_tracking` | G1 box tracking env | clip from env config | `conf/ppo/task/g1_box_tracking/` |
+| `g1_motion_tracking` | `G1MotionTracking` | `dance1_subject2_part.npz` | `conf/ppo/task/g1/g1_motion_tracking/`, `conf/appo/task/g1_motion_tracking/` |
+| `g1_flip_tracking` | `G1FlipTracking` | `flip_360_001__A304.npz` | `conf/ppo/task/g1/g1_flip_tracking/`, `conf/appo/task/g1_flip_tracking/` |
+| `g1_wall_flip_tracking` | `G1WallFlipTracking` | `flip_from_wall_104__A304.npz` | `conf/ppo/task/g1/g1_wall_flip_tracking/`, `conf/appo/task/g1_wall_flip_tracking/` |
+| `g1_climb_tracking` | G1 climb tracking env | clip from env config | `conf/ppo/task/g1/g1_climb_tracking/`, `conf/appo/task/g1_climb_tracking/` |
+| `g1_box_tracking` | G1 box tracking env | clip from env config | `conf/ppo/task/g1/g1_box_tracking/` |
 | `g1_wbt_obs` | `G1MotionTrackingSAC` | shared with `g1_motion_tracking` | `conf/offpolicy/task/sac/g1_wbt_obs/mujoco.yaml` |
 
 The defaults are set in code: `dance1_subject2_part.npz`

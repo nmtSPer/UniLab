@@ -19,6 +19,14 @@ SUPPORTED_ALGOS = ("ppo", "mlx_ppo", "appo", "sac", "td3", "flashsac")
 SUPPORTED_SIMS = ("mujoco", "motrix")
 SUPPORTED_RENDER_MODES = ("auto", "interactive", "record", "none")
 OFFPOLICY_ALGOS = {"sac", "td3", "flashsac"}
+PPO_TASK_ROBOT_PREFIXES = (
+    ("go2w_", "go2w"),
+    ("go2_", "go2"),
+    ("go1_", "go1"),
+    ("g1_", "g1"),
+    ("allegro_", "allegro"),
+    ("sharpa_", "sharpa"),
+)
 RESERVED_OVERRIDE_KEYS = {
     "algo",
     "task",
@@ -80,6 +88,13 @@ def _check_task_name(task: str) -> None:
             "--task must be a registry task name such as `go1_joystick`; "
             "do not include slashes, dots, or path separators."
         )
+
+
+def _ppo_owner_task(task: str) -> str:
+    for prefix, robot in PPO_TASK_ROBOT_PREFIXES:
+        if task.startswith(prefix):
+            return f"{robot}/{task}"
+    return task
 
 
 def _check_profile(profile: str | None) -> None:
@@ -180,21 +195,25 @@ def build_route(algo: str, task: str, sim: str, profile: str | None = None) -> R
             owner_task=f"{algo}/{task}/{owner}.yaml",
             generated_overrides=(f"algo={algo}", f"task={task_choice}"),
         )
-    task_choice = f"{task}/{owner}"
     if algo == "ppo":
+        owner_task = _ppo_owner_task(task)
+        task_choice = f"{owner_task}/{owner}"
         return Route(
             script_name="train_rsl_rl.py",
             config_group="ppo",
-            owner_task=f"{task}/{owner}.yaml",
+            owner_task=f"{owner_task}/{owner}.yaml",
             generated_overrides=(f"task={task_choice}",),
         )
     if algo == "mlx_ppo":
+        owner_task = _ppo_owner_task(task)
+        task_choice = f"{owner_task}/{owner}"
         return Route(
             script_name="train_mlx_ppo.py",
             config_group="ppo",
-            owner_task=f"{task}/{owner}.yaml",
+            owner_task=f"{owner_task}/{owner}.yaml",
             generated_overrides=(f"task={task_choice}",),
         )
+    task_choice = f"{task}/{owner}"
     if algo == "appo":
         return Route(
             script_name="train_appo.py",

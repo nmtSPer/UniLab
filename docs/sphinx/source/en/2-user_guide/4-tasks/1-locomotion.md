@@ -31,7 +31,7 @@ backend: {doc}`../../5-reference/5-support_matrix`.
 
 `go2_footstand` is the Go2 front-feet-stand task. It is **MuJoCo-only**.
 
-- PPO config: `conf/ppo/task/go2_footstand/mujoco.yaml`
+- PPO config: `conf/ppo/task/go2/go2_footstand/mujoco.yaml`
 - Registered env: `Go2FootStand` (registered for `sim_backend="mujoco"`)
 - Implementation: `src/unilab/envs/locomotion/go2/footstand.py`
   (extends the Go2 handstand task)
@@ -84,7 +84,7 @@ The value observation is therefore `675 + 49 = 724`.
 
 ### Rewards And Terminations
 
-Defaults come from `conf/ppo/task/go2_footstand/mujoco.yaml`. The reward scales
+Defaults come from `conf/ppo/task/go2/go2_footstand/mujoco.yaml`. The reward scales
 include stand `height`, `orientation`, `rear_feet_contact`, target front-leg angle
 (`tar`), `action_rate`, `dof_pos_limits`, `front_leg_motion`, `rear_leg_symmetry`,
 `knee_clearance`, `upright_stability`, `stay_still`, `pose`, plus `energy` and

@@ -45,9 +45,9 @@ uv run train --algo ppo --task g1_walk_flat --sim mujoco \
 ## Owner 本地默认值
 
 当取值范围是任务 contract 的一部分时，将其保留在 task owner YAML 中。例如，
-`conf/ppo/task/go2_joystick_rough/mujoco.yaml` 启用了 base mass、
+`conf/ppo/task/go2/go2_joystick_rough/mujoco.yaml` 启用了 base mass、
 质心、kp/kd 和 push 随机化，而
-`conf/ppo/task/sharpa_inhand/mujoco.yaml` 为 Sharpa 配置了物体缩放、摩擦和
+`conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml` 为 Sharpa 配置了物体缩放、摩擦和
 力扰动。
 
 完整的当前清单见 {doc}`0-index`。

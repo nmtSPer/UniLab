@@ -128,21 +128,21 @@ def _sim_from_owner(owner: str) -> str | None:
 
 
 def _task_entries_for_group(
-    root: Path, group: str, algos: Sequence[str]
+    root: Path, group: str, algos: Sequence[str], *, task_glob: str = "*/*.yaml"
 ) -> list[TaskCompletionEntry]:
     entries: list[TaskCompletionEntry] = []
     task_root = root / "conf" / group / "task"
     if not task_root.is_dir():
         return entries
-    for task_dir in sorted(path for path in task_root.iterdir() if path.is_dir()):
-        for owner_yaml in sorted(task_dir.glob("*.yaml")):
-            sim = _sim_from_owner(owner_yaml.stem)
-            if sim is None:
-                continue
-            entries.extend(
-                TaskCompletionEntry(algo=algo, task=task_dir.name, sim=sim, owner=owner_yaml.stem)
-                for algo in algos
-            )
+    for owner_yaml in sorted(task_root.glob(task_glob)):
+        sim = _sim_from_owner(owner_yaml.stem)
+        if sim is None:
+            continue
+        task_dir = owner_yaml.parent
+        entries.extend(
+            TaskCompletionEntry(algo=algo, task=task_dir.name, sim=sim, owner=owner_yaml.stem)
+            for algo in algos
+        )
     return entries
 
 
@@ -173,7 +173,7 @@ def _task_entries_for_offpolicy(root: Path) -> list[TaskCompletionEntry]:
 
 def _task_entries(root: Path) -> tuple[TaskCompletionEntry, ...]:
     entries = [
-        *_task_entries_for_group(root, "ppo", ("ppo", "mlx_ppo")),
+        *_task_entries_for_group(root, "ppo", ("ppo", "mlx_ppo"), task_glob="*/*/*.yaml"),
         *_task_entries_for_group(root, "appo", ("appo",)),
         *_task_entries_for_offpolicy(root),
     ]

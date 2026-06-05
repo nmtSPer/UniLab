@@ -33,7 +33,7 @@ def test_resolve_reward_dict_reads_task_reward():
     with initialize(config_path="../../conf/ppo", version_base="1.3"):
         cfg = compose(
             config_name="config",
-            overrides=["task=go2_joystick_flat/motrix"],
+            overrides=["task=go2/go2_joystick_flat/motrix"],
         )
 
     reward_dict = resolve_reward_dict(cfg)

@@ -17,7 +17,7 @@ from .rotation import AllegroRotationPPO, AllegroRotationPPOCfg, RewardConfigPPO
 @dataclass
 class AllegroRotationGraspCfg(AllegroRotationPPOCfg):
     # These are fallback defaults. Hydra task env overrides (e.g.
-    # conf/ppo/task/allegro_inhand_grasp/mujoco.yaml and CLI env.*)
+    # conf/ppo/task/allegro/allegro_inhand_grasp/mujoco.yaml and CLI env.*)
     # are applied at env construction and take precedence.
     max_episode_seconds: float = 2.0
     reward_config: RewardConfigPPO = field(

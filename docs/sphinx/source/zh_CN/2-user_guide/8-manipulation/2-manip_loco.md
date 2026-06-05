@@ -1,6 +1,6 @@
 # Manip-Loco
 
-`go2_arm_manip_loco` 将 Go2 运动与 Airbot 机械臂结合。已注册的 env 是 `Go2ArmManipLoco`，PPO owner 是 `conf/ppo/task/go2_arm_manip_loco/mujoco.yaml`，HIM-PPO owner 是 `conf/ppo_him/task/go2_arm_manip_loco/mujoco.yaml`。
+`go2_arm_manip_loco` 将 Go2 运动与 Airbot 机械臂结合。已注册的 env 是 `Go2ArmManipLoco`，PPO owner 是 `conf/ppo/task/go2/go2_arm_manip_loco/mujoco.yaml`，HIM-PPO owner 是 `conf/ppo_him/task/go2_arm_manip_loco/mujoco.yaml`。
 
 ## PPO
 

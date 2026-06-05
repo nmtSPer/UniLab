@@ -82,7 +82,7 @@ def test_sharpa_grasp_motrix_owner_cfg() -> None:
         cfg = compose(
             "config",
             overrides=[
-                "task=sharpa_inhand_grasp/motrix",
+                "task=sharpa/sharpa_inhand_grasp/motrix",
                 "algo.num_envs=2",
             ],
         )
@@ -139,7 +139,7 @@ def _compose_sharpa_mujoco_owner_cfg(num_envs: int) -> tuple[Any, dict[str, Any]
         cfg = compose(
             "config",
             overrides=[
-                "task=sharpa_inhand/mujoco",
+                "task=sharpa/sharpa_inhand/mujoco",
                 f"algo.num_envs={num_envs}",
             ],
         )
@@ -156,7 +156,7 @@ def _compose_sharpa_motrix_owner_cfg(num_envs: int) -> tuple[Any, dict[str, Any]
         cfg = compose(
             "config",
             overrides=[
-                "task=sharpa_inhand/motrix",
+                "task=sharpa/sharpa_inhand/motrix",
                 f"algo.num_envs={num_envs}",
             ],
         )
@@ -307,7 +307,7 @@ def test_sharpa_grasp_motrix_reset_and_step_smoke() -> None:
         cfg = compose(
             "config",
             overrides=[
-                "task=sharpa_inhand_grasp/motrix",
+                "task=sharpa/sharpa_inhand_grasp/motrix",
                 f"algo.num_envs={num_envs}",
             ],
         )

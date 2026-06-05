@@ -166,7 +166,7 @@ def test_ppo_sharpa_motrix_one_iteration_training_smoke(tmp_path):
         [
             sys.executable,
             "scripts/train_rsl_rl.py",
-            "task=sharpa_inhand/motrix",
+            "task=sharpa/sharpa_inhand/motrix",
             "algo.num_envs=16",
             "algo.num_steps_per_env=2",
             "algo.max_iterations=1",

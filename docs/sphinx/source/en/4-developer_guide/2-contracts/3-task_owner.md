@@ -32,7 +32,7 @@ contract is recorded in
 
 ## Evidence In Repo
 
-- PPO owner example: `conf/ppo/task/go2_joystick_flat/mujoco.yaml`
+- PPO owner example: `conf/ppo/task/go2/go2_joystick_flat/mujoco.yaml`
 - APPO config root: `conf/appo/config.yaml`
 - Off-policy config root: `conf/offpolicy/config.yaml`
 - Off-policy task/algo guard: `src/unilab/training/common.py`

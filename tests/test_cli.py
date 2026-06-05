@@ -15,8 +15,9 @@ def _make_minimal_checkout(
 ) -> None:
     (root / "scripts").mkdir(parents=True)
     (root / "scripts" / "train_rsl_rl.py").write_text("", encoding="utf-8")
-    (root / "conf" / algo / "task" / task).mkdir(parents=True)
-    (root / "conf" / algo / "task" / task / "motrix.yaml").write_text(
+    owner_task = cli._ppo_owner_task(task) if algo == "ppo" else task
+    (root / "conf" / algo / "task" / owner_task).mkdir(parents=True)
+    (root / "conf" / algo / "task" / owner_task / "motrix.yaml").write_text(
         "training:\n  sim_backend: motrix\n",
         encoding="utf-8",
     )
@@ -53,7 +54,7 @@ def test_macos_motrix_train_uses_mxpython_when_playback_can_open_renderer(
     assert command[0] == "/opt/bin/mxpython"
     assert command[1:] == [
         str(tmp_path / "scripts" / "train_rsl_rl.py"),
-        "task=go2_joystick_flat/motrix",
+        "task=go2/go2_joystick_flat/motrix",
     ]
 
 
@@ -108,7 +109,7 @@ def test_macos_motrix_finds_uv_venv_mxpython_when_not_on_path(
 def test_train_profile_routes_to_owner_variant(tmp_path: Path) -> None:
     (tmp_path / "scripts").mkdir(parents=True)
     (tmp_path / "scripts" / "train_rsl_rl.py").write_text("", encoding="utf-8")
-    owner_dir = tmp_path / "conf" / "ppo" / "task" / "sharpa_inhand"
+    owner_dir = tmp_path / "conf" / "ppo" / "task" / "sharpa" / "sharpa_inhand"
     owner_dir.mkdir(parents=True)
     (owner_dir / "mujoco_hora.yaml").write_text(
         "training:\n  sim_backend: mujoco\n",
@@ -127,7 +128,7 @@ def test_train_profile_routes_to_owner_variant(tmp_path: Path) -> None:
 
     assert command[1:] == [
         str(tmp_path / "scripts" / "train_rsl_rl.py"),
-        "task=sharpa_inhand/mujoco_hora",
+        "task=sharpa/sharpa_inhand/mujoco_hora",
     ]
 
 
@@ -158,11 +159,11 @@ def test_go2_arm_manip_loco_motrix_train_and_eval_route_to_owner_config(
 
     assert train_command[1:] == [
         str(tmp_path / "scripts" / "train_rsl_rl.py"),
-        "task=go2_arm_manip_loco/motrix",
+        "task=go2/go2_arm_manip_loco/motrix",
     ]
     assert eval_command[1:3] == [
         str(tmp_path / "scripts" / "train_rsl_rl.py"),
-        "task=go2_arm_manip_loco/motrix",
+        "task=go2/go2_arm_manip_loco/motrix",
     ]
     assert "training.play_only=true" in eval_command
     assert "algo.load_run=-1" in eval_command
@@ -260,7 +261,8 @@ def _make_demo_checkout(root: Path, *, demo_name: str) -> None:
     (root / "scripts").mkdir(parents=True, exist_ok=True)
     (root / "scripts" / "train_rsl_rl.py").write_text("", encoding="utf-8")
     (root / "scripts" / "play_interactive.py").write_text("", encoding="utf-8")
-    owner_dir = root / "conf" / spec.algo / "task" / spec.task
+    owner_task = demo._ppo_owner_task(spec.task) if spec.algo == "ppo" else spec.task
+    owner_dir = root / "conf" / spec.algo / "task" / owner_task
     owner_dir.mkdir(parents=True, exist_ok=True)
     (owner_dir / f"{spec.sim}.yaml").write_text(
         f"training:\n  sim_backend: {spec.sim}\n", encoding="utf-8"
@@ -298,7 +300,7 @@ def test_demo_eval_entry_passes_checkpoint_as_load_run_override(
 
     assert command[0] == sys.executable
     assert command[1] == str(tmp_path / "scripts" / "train_rsl_rl.py")
-    assert "task=g1_motion_tracking/motrix" in command
+    assert "task=g1/g1_motion_tracking/motrix" in command
     assert "training.play_only=true" in command
     assert f"algo.load_run={abs_pt}" in command
 
@@ -314,7 +316,7 @@ def test_demo_play_interactive_entry_assembles_locomani_command(
 
     assert command[0] == sys.executable
     assert command[1] == str(tmp_path / "scripts" / "play_interactive.py")
-    assert "task=go2_arm_manip_loco/mujoco" in command
+    assert "task=go2/go2_arm_manip_loco/mujoco" in command
     assert f"algo.load_run={abs_pt}" in command
     assert "training.device=cpu" in command
 

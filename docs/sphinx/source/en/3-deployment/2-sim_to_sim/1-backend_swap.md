@@ -35,7 +35,7 @@ uv run train --algo ppo --task go2_joystick_flat --sim motrix
 ```
 
 The CLI resolves `--algo`, `--task`, and `--sim` to an owner YAML such as
-`conf/ppo/task/go2_joystick_flat/mujoco.yaml`. If that file doesn't exist, the
+`conf/ppo/task/go2/go2_joystick_flat/mujoco.yaml`. If that file doesn't exist, the
 task **does not support** the backend — see
 {doc}`../../4-developer_guide/2-contracts/3-task_owner`.
 

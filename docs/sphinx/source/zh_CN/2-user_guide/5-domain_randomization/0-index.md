@@ -210,8 +210,8 @@ uv run train --algo ppo --task g1_walk_flat --sim mujoco \
 
 Sharpa 手是仓库中当前 `geom_size` init 生命周期 DR 的示例任务。相关任务配置：
 
-- `conf/ppo/task/sharpa_inhand/mujoco.yaml`
-- `conf/ppo/task/sharpa_inhand_grasp/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand/mujoco.yaml`
+- `conf/ppo/task/sharpa/sharpa_inhand_grasp/mujoco.yaml`
 
 ### 1. 配置入口
 
